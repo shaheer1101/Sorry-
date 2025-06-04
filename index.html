@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorry Emoji 😭</title>
+    <style>
+        body {
+            background-color: #FFD9E6; /* Light Pink Background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .emoji-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .sorry {
+            position: absolute;
+            font-size: 8px;
+            font-weight: bold;
+            color: #FFD700; /* Yellow for face */
+        }
+        .tear {
+            color: #2196F3; /* Blue for tears */
+            animation: fallTear 1.5s infinite alternate ease-in-out, blinkTear 0.5s infinite alternate ease-in-out;
+        }
+        .black {
+            color: black; /* Black for eyes & mouth */
+        }
+        .white {
+            color: white; /* White for teeth */
+        }
+
+        /* Falling animation for tears */
+        @keyframes fallTear {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(15px); opacity: 0.5; }
+        }
+
+        /* Blinking animation for tears */
+        @keyframes blinkTear {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="emoji-container" id="emoji"></div>
+
+    <script>
+        const positions = [
+            // Circular Face Outline (SORRY Text)
+            ...generateCircle(175, 175, 150, 15),
+
+            // Eyes (Black)
+            ...generateCircle(110, 100, 25, 10, "black"),
+            ...generateCircle(240, 100, 25, 10, "black"),
+
+            // Tears (Blue, animated falling down)
+            ...generateGrid(100, 130, 20, 80, 10, "tear"),
+            ...generateGrid(230, 130, 20, 80, 10, "tear"),
+
+            // Mouth Outline (Black Curve)
+            ...generateArc(175, 220, 70, 40, Math.PI, "black"),
+
+            // Teeth (White SORRYs inside the mouth)
+            ...generateGrid(130, 220, 90, 20, 12, "white")
+        ];
+
+        function generateCircle(centerX, centerY, radius, density, className = "") {
+            let points = [];
+            for (let angle = 0; angle < 2 * Math.PI; angle += Math.PI / density) {
+                let x = centerX + radius * Math.cos(angle);
+                let y = centerY + radius * Math.sin(angle);
+                points.push({ x, y, className });
+            }
+            return points;
+        }
+
+        function generateArc(centerX, centerY, width, height, range, className = "") {
+            let points = [];
+            for (let i = 0; i <= range; i += 0.15) {
+                let x = centerX + width * Math.cos(i);
+                let y = centerY + height * Math.sin(i);
+                points.push({ x, y, className });
+            }
+            return points;
+        }
+
+        function generateGrid(startX, startY, width, height, density, className = "") {
+            let grid = [];
+            for (let x = startX; x < startX + width; x += density) {
+                for (let y = startY; y < startY + height; y += density) {
+                    grid.push({ x, y, className });
+                }
+            }
+            return grid;
+        }
+
+        const emojiContainer = document.getElementById("emoji");
+
+        positions.forEach(pos => {
+            let sorryText = document.createElement("div");
+            sorryText.classList.add("sorry");
+            if (pos.className) sorryText.classList.add(pos.className);
+            sorryText.innerText = "SORRY";
+            sorryText.style.left = `${pos.x}px`;
+            sorryText.style.top = `${pos.y}px`;
+            emojiContainer.appendChild(sorryText);
+        });
+    </script>
+
+
+</body></html>
